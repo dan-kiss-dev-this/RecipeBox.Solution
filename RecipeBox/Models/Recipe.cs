@@ -11,5 +11,6 @@ namespace RecipeBox.Models
 
         //EF Core
         public List<RecipeTag> JoinRecipeTags { get; }
+        public ApplicationUser User { get; set; }
     }
 }

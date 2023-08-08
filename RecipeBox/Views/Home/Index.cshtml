@@ -1,8 +1,50 @@
 ﻿@{
-    ViewData["Title"] = "Home Page";
+    Layout = "_Layout";
 }
 
-<div class="text-center">
-    <h1 class="display-4">Welcome</h1>
-    <p>Learn about <a href="https://docs.microsoft.com/aspnet/core">building Web apps with ASP.NET Core</a>.</p>
-</div>
+@using RecipeBox.Models;
+
+<h1>Welcome to Recipe Box!</h1>
+
+<hr>
+
+<h4>All Recipes</h4>
+@if (Model["recipes"].Length == 0)
+{
+    <p>No recipes are currently in the database</p>
+}
+<ul>
+    @foreach (Recipe recipe in Model["recipes"])
+    {
+        <li>@Html.ActionLink(recipe.Name, "Details", "Recipes", new { id = @recipe.RecipeId})
+        </li>
+    }
+</ul>
+
+@if (User.Identity.IsAuthenticated)
+{
+    <h4>@User.Identity.Name 's Recipes</h4>
+    @if (Model["recipes"].Lenght == 0)
+    {
+        <p>You have no recipes in the database</p>
+    }
+    <ul>
+    @foreach (Recipe recipe in Model["recipes"])
+        {
+            <li>@Html.ActionLink(@recipe.Name, "Details", "Recipes", new { id = @recipe.RecipeId})
+            </li>
+        }
+    </ul>
+}
+else
+{
+    <h4>Your Recipes</h4>
+    <p>Please @Html.ActionLink("log in", "LogIn", "Account") to view or manage your recipes</p>
+}
+
+<hr>
+
+<p>@Html.ActionLink("Manage recipes", "Index", "Recipes")</p>
+<p>@Html.ActionLink("Manage tags", "Index", "Tags")</p>
+<p>@Html.ActionLink("Create or manage an account", "Index", "Account")</p>
+
