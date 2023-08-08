@@ -9,6 +9,6 @@ namespace RecipeBox.Models
         public int Rating { get; set; }
 
         //EF Core
-        public List<RecipeTag> JoinTags { get; set;}
+        public List<RecipeTag> JoinRecipeTags { get; }
     }
 }
