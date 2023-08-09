@@ -48,8 +48,9 @@ namespace RecipeBox.Controllers
             {
                 // see how email address is set to username
                 ApplicationUser user = new ApplicationUser { UserName = model.Email };
-                Console.WriteLine(5151);
-                Console.WriteLine(user);
+                Console.WriteLine(5353);
+                Console.WriteLine(Newtonsoft.Json.JsonConvert.SerializeObject(user));
+
                 IdentityResult result = await _userManager.CreateAsync(user, model.Password);
                 if (result.Succeeded)
                 {
