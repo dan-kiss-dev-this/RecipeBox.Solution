@@ -54,6 +54,24 @@ namespace RecipeBox.Controllers
             return View();
         }
 
+        [HttpPost]
+        public async Task<ActionResult> Create(Recipe recipe)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(recipe);
+            }
+            else
+            {
+                string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                ApplicationUser currentUser = await _userManager.FindByIdAsync(userId);
+                recipe.User = currentUser;
+                _db.Recipes.Add(recipe);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+        }
+
         // private readonly RecipeBoxContext _db;
         // // used to create users
         // private readonly UserManager<ApplicationUser> _userManager;
