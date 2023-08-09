@@ -1,1 +1,18 @@
-<p>hi</p>
+@if (User.Identity.IsAuthenticated)
+{
+    <p>Hello @User.Identity.IsAuthenticated</p>
+    @using (Html.BeginForm("LogOff", "AccountUser"))
+    {
+        <input type="submit" class="btn brn-primary" value="Log out">
+    }
+}
+else
+{
+    <p>Welcome to the account page</p>
+    @Html.ActionLink("Register", "Register")
+    <br />
+    @Html.ActionLink("Login", "Login")
+}
+<br />
+
+@Html.ActionLink("Home", "Index", "Home")

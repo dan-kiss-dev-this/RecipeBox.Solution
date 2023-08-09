@@ -2,7 +2,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Identity;
 using RecipeBox.Models;
 using System.Threading.Tasks;
-// using RecipeBox.ViewModels;
+using RecipeBox.ViewModels;
 
 namespace RecipeBox.Controllers
 {
@@ -29,6 +29,42 @@ namespace RecipeBox.Controllers
         public ActionResult Index()
         {
             return View();
+        }
+
+        public ActionResult Register()
+        {
+            return View();
+        }
+
+        [HttpPost]
+        // may need to be called login, no its registration
+        public async Task<ActionResult> Register(RegisterViewModel model)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(model);
+            }
+            else
+            {
+                // see how email address is set to username
+                ApplicationUser user = new ApplicationUser { UserName = model.Email };
+                Console.WriteLine(5151);
+                Console.WriteLine(user);
+                IdentityResult result = await _userManager.CreateAsync(user, model.Password);
+                if (result.Succeeded)
+                {
+                    // todo do when user is create log them in
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    foreach (IdentityError error in result.Errors)
+                    {
+                        ModelState.AddModelError("", error.Description);
+                    }
+                    return View(model);
+                }
+            }
         }
     }
 }
