@@ -1,0 +1,19 @@
+@{
+    Layout = "_Layout";
+}
+
+@using RecipeBox.Models
+@model RecipeBox.Models.Recipe
+
+<h2>Recipe Details</h2>
+<hr />
+<h3>@Html.DisplayNameFor(model => model.Name): @Html.DisplayFor(model => model.Name)</h3>
+<br>
+<h3>@Html.DisplayNameFor(model => model.Ingredients): @Html.DisplayFor(model => model.Ingredients)</h3>
+<br>
+<h3>@Html.DisplayNameFor(model => model.Rating): @Html.DisplayFor(model => model.Rating)</h3>
+
+<p>@Html.ActionLink("Back to Recipe List", "Index")</p>
+@* todo add error handeling if reipe id does not exist *@
+<p>@Html.ActionLink("Edit this Recipe", "Edit", new { id = Model.RecipeId})</p>
+<p>@Html.ActionLink("Delete this Recipe", "Delete", new { id = Model.RecipeId})</p>
