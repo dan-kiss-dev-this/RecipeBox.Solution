@@ -77,6 +77,13 @@ namespace RecipeBox.Controllers
             .FirstOrDefault(recipe => recipe.RecipeId == id);
             return View(thisRecipe);
         }
+
+        public ActionResult Edit(int id)
+        {
+            Recipe thisRecipe = _db.Recipes
+              .FirstOrDefault(recipe => recipe.RecipeId == id);
+            return View(thisRecipe);
+        }
         // private readonly RecipeBoxContext _db;
         // // used to create users
         // private readonly UserManager<ApplicationUser> _userManager;
