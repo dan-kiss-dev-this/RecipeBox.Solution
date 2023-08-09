@@ -10,7 +10,7 @@ namespace RecipeBox.Controllers
     {
 
         private readonly RecipeBoxContext _db;
-        // used to create users
+        // used to create and find users
         private readonly UserManager<ApplicationUser> _userManager;
         // used to sign in users
         private readonly SignInManager<ApplicationUser> _signInManager;

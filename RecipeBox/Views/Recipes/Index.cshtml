@@ -1,0 +1,21 @@
+@using RecipeBox.Models;
+
+<h3>List of Recipies</h3>
+@if (Model.Count == 0)
+{
+    <p>No recipes added yet</p>
+}
+else
+{
+    <ul>
+    @foreach (Recipe recipe in Model)
+        {
+            <li>
+                @Html.ActionLink(@recipe.Name, "Details", "Recipies")
+            </li>
+        }
+    </ul>
+}
+
+<p>@Html.ActionLink("Create a recipe", "Create")</p>
+

@@ -24,7 +24,7 @@
 @if (User.Identity.IsAuthenticated)
 {
     <h4>@User.Identity.Name 's Recipes</h4>
-    @if (Model["recipes"].Lenght == 0)
+    @if (Model["recipes"].Length == 0)
     {
         <p>You have no recipes in the database</p>
     }
