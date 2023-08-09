@@ -9,12 +9,12 @@
 <hr>
 
 <h4>All Recipes</h4>
-@if (Model["recipes"].Length == 0)
+@if (Model["allRecipes"].Length == 0)
 {
     <p>No recipes are currently in the database</p>
 }
 <ul>
-    @foreach (Recipe recipe in Model["recipes"])
+    @foreach (Recipe recipe in Model["allRecipes"])
     {
         <li>@Html.ActionLink(recipe.Name, "Details", "Recipes", new { id = @recipe.RecipeId})
         </li>
@@ -24,17 +24,21 @@
 @if (User.Identity.IsAuthenticated)
 {
     <h4>@User.Identity.Name 's Recipes</h4>
-    @if (Model["recipes"].Length == 0)
+    @if (Model["userRecipes"].Length == 0)
     {
-        <p>You have no recipes in the database</p>
+        <p>You have recipes in the database</p>
     }
-    <ul>
-    @foreach (Recipe recipe in Model["recipes"])
-        {
-            <li>@Html.ActionLink(@recipe.Name, "Details", "Recipes", new { id = @recipe.RecipeId})
-            </li>
-        }
-    </ul>
+    else
+    {
+        <ul>
+    @foreach (Recipe recipe in Model["userRecipes"])
+            {
+                <li>@Html.ActionLink(@recipe.Name, "Details", "Recipes", new { id = @recipe.RecipeId})
+                </li>
+
+            }
+        </ul>
+    }
 }
 else
 {

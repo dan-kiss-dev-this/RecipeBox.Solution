@@ -5,6 +5,7 @@ using System.Linq;
 using Microsoft.AspNetCore.Identity;
 using System.Threading.Tasks;
 using System.Security.Claims;
+using Microsoft.EntityFrameworkCore;
 
 namespace RecipeBox.Controllers;
 
@@ -22,11 +23,29 @@ public class HomeController : Controller
     [HttpGet("/")]
     public async Task<ActionResult> Index()
     {
-        Recipe[] recipes = _db.Recipes.ToArray();
+        Recipe[] allRecipes = _db.Recipes.ToArray();
         Dictionary<string, object[]> model = new Dictionary<string, object[]>();
-        model.Add("recipes", recipes);
+        model.Add("allRecipes", allRecipes);
+
+
         string userId = this.User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
-        ApplicationUser currentUser = await _userManager.FindByIdAsync(userId);
+        
+        if (userId != null)
+        {
+            ApplicationUser currentUser = await _userManager.FindByIdAsync(userId);
+            Recipe[] userRecipes = _db.Recipes
+                .Where(entry => entry.User.Id == currentUser.Id)
+                // .ThenInclude(entry => entry.JoinRecipeTags)
+                // add tags to recipe
+                // ?? new Recipe[0]
+                .ToArray();
+            model.Add("userRecipes", userRecipes);
+        }
+        else
+        {
+            Recipe[] userRecipes = { };
+            model.Add("userRecipes", userRecipes);
+        }
 
         return View(model);
     }
