@@ -84,6 +84,24 @@ namespace RecipeBox.Controllers
               .FirstOrDefault(recipe => recipe.RecipeId == id);
             return View(thisRecipe);
         }
+
+        [HttpPost]
+        public async Task<ActionResult> Edit(Recipe recipe)
+        {
+            if (!ModelState.IsValid)
+            {
+                return View(recipe);
+            }
+            else
+            {
+                string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
+                ApplicationUser currentUser = await _userManager.FindByIdAsync(userId);
+                // recipe.User = currentUser;
+                _db.Recipes.Update(recipe);
+                _db.SaveChanges();
+                return RedirectToAction("Index");
+            }
+        }
         // private readonly RecipeBoxContext _db;
         // // used to create users
         // private readonly UserManager<ApplicationUser> _userManager;
