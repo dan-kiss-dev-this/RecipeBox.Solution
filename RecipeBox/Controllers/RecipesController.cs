@@ -82,13 +82,20 @@ namespace RecipeBox.Controllers
         public ActionResult Edit(int id)
         {
             Recipe thisRecipe = _db.Recipes
+               .Include(recipe => recipe.User)
               .FirstOrDefault(recipe => recipe.RecipeId == id);
+            Console.WriteLine(8787);
+            Console.WriteLine(thisRecipe.User.Id);
             return View(thisRecipe);
         }
 
         [HttpPost]
         public async Task<ActionResult> Edit(Recipe recipe)
         {
+            // Recipe thisRecipe = _db.Recipes
+            //    .Include(aRecipe => arecipe.User)
+            //   .FirstOrDefault(arecipe => arecipe.RecipeId == recipe.id);
+
             if (!ModelState.IsValid)
             {
                 return View(recipe);
@@ -97,19 +104,30 @@ namespace RecipeBox.Controllers
             {
                 string userId = User.FindFirst(ClaimTypes.NameIdentifier)?.Value;
                 ApplicationUser currentUser = await _userManager.FindByIdAsync(userId);
-                // recipe.User = currentUser;
-                _db.Recipes.Update(recipe);
-                _db.SaveChanges();
-                return RedirectToAction("Index");
+                Console.WriteLine(107108);
+                Console.WriteLine(recipe.User.Id);
+                if (recipe.User.Id == currentUser.Id)
+                {
+                    _db.Recipes.Update(recipe);
+                    _db.SaveChanges();
+                    return RedirectToAction("Index");
+                }
+                else
+                {
+                    return RedirectToAction("NotAllowed");
+                }
             }
+        }
+
+        public ActionResult NotAllowed()
+        {
+            return View();
         }
         public ActionResult AddTag(int id)
         {
             Recipe thisRecipe = _db.Recipes.FirstOrDefault(recipe => recipe.RecipeId == id);
             ViewBag.TagId = new SelectList(_db.Tags, "TagId", "Description");
             return View(thisRecipe);
-
-
         }
         [HttpPost]
         public ActionResult AddTag(Recipe recipe, int tagId)

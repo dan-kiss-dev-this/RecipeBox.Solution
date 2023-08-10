@@ -25,7 +25,7 @@ namespace RecipeBox.Controllers
             _db = db;
             _userManager = userManager;
         }
-
+        [AllowAnonymous]
         public ActionResult Index()
         {
             return View(_db.Tags.ToList());
