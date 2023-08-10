@@ -125,6 +125,22 @@ namespace RecipeBox.Controllers
             return RedirectToAction("Details", new { id = recipe.RecipeId });
         }
 
+        public ActionResult Delete(int id)
+        {
+            Recipe theRecipe = _db.Recipes.FirstOrDefault(recipe => recipe.RecipeId == id);
+            return View(theRecipe);
+        }
+
+        [HttpPost, ActionName("Delete")]
+        public ActionResult DeleteConfirmed(int id)
+        {
+            Recipe thisRecipe = _db.Recipes.FirstOrDefault(entry => entry.RecipeId == id);
+            _db.Recipes.Remove(thisRecipe);
+            _db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+
+
         // private readonly RecipeBoxContext _db;
         // // used to create users
         // private readonly UserManager<ApplicationUser> _userManager;
