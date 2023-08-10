@@ -13,8 +13,18 @@
 <br>
 <h3>@Html.DisplayNameFor(model => model.Rating): @Html.DisplayFor(model => model.Rating)</h3>
 
+@* <h3>@Html.DisplayNameFor(model => model.JoinRecipeTags): @Html.DisplayFor(model => model.JoinRecipeTags)</h3> *@
+
+<ul>
+@foreach(RecipeTag recipeTag in Model.JoinRecipeTags)
+{
+    <li>@recipeTag.Tag.Description</li>
+}
+</ul>
+
 <p>@Html.ActionLink("Back to Recipe List", "Index")</p>
 @* todo add error handeling if reipe id does not exist *@
 @* todo do not show edit link if recipe does not belong to user *@
+<p>@Html.ActionLink("Add a tag to this Recipe", "AddTag", new {id = Model.RecipeId})</p>
 <p>@Html.ActionLink("Edit this Recipe", "Edit", new { id = Model.RecipeId})</p>
 <p>@Html.ActionLink("Delete this Recipe", "Delete", new { id = Model.RecipeId})</p>

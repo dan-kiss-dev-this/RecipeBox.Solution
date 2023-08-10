@@ -8,8 +8,7 @@ using System.Linq;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authorization;
 using System.Security.Claims;
-
-// using Microsoft.AspNetCore.Mvc.Rendering;
+using Microsoft.AspNetCore.Mvc.Rendering;
 
 namespace RecipeBox.Controllers
 {
@@ -74,6 +73,8 @@ namespace RecipeBox.Controllers
         public ActionResult Details(int id)
         {
             Recipe thisRecipe = _db.Recipes
+            .Include(recipe => recipe.JoinRecipeTags)
+            .ThenInclude(join => join.Tag)
             .FirstOrDefault(recipe => recipe.RecipeId == id);
             return View(thisRecipe);
         }
@@ -102,6 +103,28 @@ namespace RecipeBox.Controllers
                 return RedirectToAction("Index");
             }
         }
+        public ActionResult AddTag(int id)
+        {
+            Recipe thisRecipe = _db.Recipes.FirstOrDefault(recipe => recipe.RecipeId == id);
+            ViewBag.TagId = new SelectList(_db.Tags, "TagId", "Description");
+            return View(thisRecipe);
+
+
+        }
+        [HttpPost]
+        public ActionResult AddTag(Recipe recipe, int tagId)
+        {
+#nullable enable
+            RecipeTag? joinRecipeTag = _db.RecipeTags.FirstOrDefault(join => join.TagId == tagId && join.RecipeId == recipe.RecipeId);
+#nullable disable
+            if (joinRecipeTag == null && tagId != 0)
+            {
+                _db.RecipeTags.Add(new RecipeTag() { TagId = tagId, RecipeId = recipe.RecipeId });
+                _db.SaveChanges();
+            }
+            return RedirectToAction("Details", new { id = recipe.RecipeId });
+        }
+
         // private readonly RecipeBoxContext _db;
         // // used to create users
         // private readonly UserManager<ApplicationUser> _userManager;
